@@ -3,41 +3,40 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
 
-const url = "mongodb://localhost:27017/foodDB";
+const url = "mongodb://localhost:27017/travelDB";
 const app = express();
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const foodSchema = {
+const travelSchema = {
   place: String,
   price: String,
-  date: date,
+  date: String,
 };
 
-const Food = mongoose.model("food", foodSchema);
+const Plan = mongoose.model("plan", travelSchema);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  Food.find(function (err, foods) {
+  Plan.find(function (err, plans) {
     if (!err) {
-      res.render("index", { foods: foods });
+      res.render("index", { plans: plans });
     } else {
       res.send(err);
     }
   });
 });
 
-app.route("/foods").post(function (req, res) {
-  const food = new Food({
+app.route("/plans").post(function (req, res) {
+  const plan = new Plan({
     place: req.body.place,
     date: req.body.date,
     price: req.body.price,
-    
   });
-  food.save(function (err) {
+  plan.save(function (err) {
     if (!err) {
       res.redirect("/");
     } else {
@@ -47,19 +46,19 @@ app.route("/foods").post(function (req, res) {
 });
 
 app
-  .route("/foods/:foodId")
+  .route("/plans/:planId")
   .get(function (req, res) {
-    Food.findOne({ _id: req.params.foodId }, function (err, foundFood) {
-      if (foundFood) {
-        res.render("food", { foundFood: foundFood });
+    Plan.findOne({ _id: req.params.planId }, function (err, foundPlan) {
+      if (foundPlan) {
+        res.render("TravelPlan", { foundPlan: foundPlan });
       } else {
         res.send("Not found");
       }
     });
   })
   .post(function (req, res) {
-    Food.update(
-      { _id: req.params.foodId },
+    Plan.update(
+      { _id: req.params.planId },
       { place: req.body.place, date: req.body.date, price: req.body.price },
       { overwrite: true },
       function (err) {
@@ -72,8 +71,8 @@ app
     );
   });
 
-app.post("/foods/delete/:foodId", function (req, res) {
-  Food.deleteOne({ _id: req.params.foodId }, function (err) {
+app.post("/plans/delete/:planId", function (req, res) {
+  Plan.deleteOne({ _id: req.params.planId }, function (err) {
     if (!err) {
       res.redirect("/");
     } else {
