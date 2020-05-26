@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Dosis&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/b151494c6b.js" crossorigin="anonymous"></script>
     <style>
         body {
 
@@ -38,11 +39,7 @@
 
         }
 
-        #adding {
-            padding: 2% 15%;
-            margin-top: 50px;
-            margin-bottom: 150px;
-        }
+
 
         #footer {
             background-color: #655c56;
@@ -54,8 +51,11 @@
             background-color: #ccedd2;
         }
 
-        .card {
-            padding: 3%;
+        .btn {
+            position: absolute;
+            right: 0;
+            border: 0;
+            padding: 1% 2%;
         }
     </style>
 </head>
@@ -70,45 +70,53 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="/">Home </a>
-                <a class="nav-item nav-link" href="/todoList">View To-Do list</a>
+                <a class="nav-item nav-link " href="/">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link active" href="/todoList">View To-Do list</a>
             </div>
         </div>
     </nav>
     <div class="jumbotron jumbotron-fluid">
         <div class="container header-text">
-            <h1 class="display-4 text-center">MY Todo 🖊</h1>
+            <h1 class="display-4 text-center">Add Todo 🖊</h1>
 
 
         </div>
     </div>
 
-    <div class="container" id="adding">
-        <h1 class="header-text text-center mb-2">Start adding your To-Do!</h1>
-        <hr>
 
-        <div class="card">
+    <div class="container">
+        <% if(plans.length < 1) { %>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1 class="text-center mt-5 header-text">Please insert your to-do list first</h1>
+        <% } %>
+        <% plans.forEach(plan=>{ %>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><b>Your Todo</b>
+                    <form action="/plans/delete/<%= plan._id %>" method="post" style="display: inline;">
+                        <button class="btn btn-sm btn-danger mr-3"><i class="far fa-trash-alt"></i></button></form>
 
-            <div class="card-body">
-                <form action="/plans" method="post">
-                    <label for="">
-                        <b>What do you want to do?</b>
-                    </label>
-                    <input type="text" class="form-control" name="title" placeholder="Your details">
-                    <label class="mt-2" for=""><b>When?</b></label>
-                    <input type="date" class="form-control" name="date">
-                    <button class="btn btn-info btn-block mt-3">Click for adding</button>
-                </form>
+                </div>
+                <div class="card-body">
+                    <p><b>Detail: <%= plan.title %></b><br></p>
+
+                    <p><b>When: <%= plan.date %></br></p>
+
+                </div>
+                <div class="card-footer">
+                    <form action="/plans/<%= plan._id %>" method="GET">
+                        <button class="btn-info btn btn-block">Edit</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
-
-
-    <div class="container-fluid" id="footer">
-        <p class="text-center header-text" style="font-size: 2rem;"><b>Karit chalisarapong</b></p>
+        <% }); %>
 
     </div>
+
 
 
 </body>
