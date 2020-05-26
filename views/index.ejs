@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Linux app</title>
+    <title>Travel by tae</title>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -72,38 +72,42 @@
     <div class="container mt-3">
         <h1 class="header-text">Planning 🏁</h1>
         <hr>
-        <div class="row">
-            <% if(plans.length === 0) { %>
-            <h3 class="ml-3 mt-3 mb-3">Please add plan!</h3>
-            <% }else { %>
-            <% plans.forEach(plan => { %>
-            <div class="col-lg-4 mb-4">
-                <div class="card ">
-                    <h5 class="card-header">Place: <%= plan.place %></h5>
-                    <div class="card-body">
-                        <p class="card-text">date: <%= plan.date %></p>
-                        <p class="card-text">price: <%= plan.price %> Baht</p>
-                        <div class="row justify-content-around ">
+        <table class="table table-hover table-bordered">
+            <thead class="bg-info">
+                <tr>
+                    <th scope="col">#id</th>
+                    <th scope="col">Place</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Manage</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% if(plans.length === 0) { %>
+                <h3 class="ml-3 mt-3 mb-3">Please add plan!</h3>
+                <% }else { %>
+                <% plans.forEach(plan => { %>
+                <tr>
+                    <th scope="row"><%= plan._id %></th>
+                    <td><%= plan.place %></td>
+                    <td><%= plan.date %></td>
+                    <td><%= plan.price %> Baht</td>
+                    <td>
+                        <div class="row justify-content-around">
                             <form action="/plans/<%= plan._id %>" method="get">
                                 <button class="btn btn-md btn-success" type="submit">Edit infomation</button>
                             </form>
                             <form action="/plans/delete/<%= plan._id %>" method="post">
-                                <button class="btn btn-md btn-danger" type="submit">Delete</button>
+                                <button class="btn btn-md btn-danger" type="submit">🚮 Delete</button>
                             </form>
-
-
                         </div>
-                    </div>
 
-
-                </div>
-            </div>
-            <%   }); }%>
-
-
-
-        </div>
-
+                    </td>
+                </tr>
+                <%   }); }%>
+            </tbody>
+        </table>
     </div>
 
     <div class="container-fluid mt-3" id="insert">
@@ -129,7 +133,7 @@
         </div>
     </div>
     <div class="container-fluid" id="footer">
-        <p class="text-center header-text"><b>© Aekknon Phomsiriudom 61130500233</b></p>
+        <p class="text-center header-text"><b>✈ Aekknon Phomsiriudom 61130500233</b></p>
         <hr style="text-align: center; width: 30%;">
     </div>
 
